@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Decision Tree Classifier</title>
+</head>
+<body>
+    <h1>Decision Tree Classifier</h1>
+    <form method="post" action="">
+        {% csrf_token %}
+        {% for feature in feature_names %}
+            <label>{{ feature }}:</label>
+            <input type="number" name="features" step="0.01" min="0" max="10" value="5.0" required><br><br>
+        {% endfor %}
+        <button type="submit">Predict</button>
+    </form>
+
+    {% if predicted_class %}
+        <hr>
+        <h2>Prediction Result:</h2>
+        <p><strong>Predicted Class:</strong> {{ predicted_class }}</p>
+
+        <h3>Decision Path:</h3>
+        <pre>{{ decision_path }}</pre>
+    {% endif %}
+</body>
+</html>
