@@ -1,26 +1,143 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Decision Tree Classifier</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            width: 80%;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-section {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .image-section {
+            flex: 1;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .image-section img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input {
+            padding: 8px;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .result-box {
+            background-color: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #0275d8;
+            text-align: center;
+        }
+
+        .decision-path {
+            background: #f8f9fa;
+            padding: 10px;
+            border-left: 5px solid #007BFF;
+            margin-top: 10px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                width: 90%;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Decision Tree Classifier</h1>
-    <form method="post" action="">
-        {% csrf_token %}
-        {% for feature in feature_names %}
-            <label>{{ feature }}:</label>
-            <input type="number" name="features" step="0.01" min="0" max="10" value="5.0" required><br><br>
-        {% endfor %}
-        <button type="submit">Predict</button>
-    </form>
+    <div class="container">
+        <!-- Form Section -->
+        <div class="form-section">
+            <h1>Decision Tree Classifier</h1>
+            <form method="post" action="">
+                {% csrf_token %}
+                {% for feature in feature_names %}
+                    <label>{{ feature }}:</label>
+                    <input type="number" name="features" step="0.01" min="0" max="10" value="5.0" required>
+                {% endfor %}
+                <button type="submit"><i class="fas fa-search"></i> Predict</button>
+            </form>
 
-    {% if predicted_class %}
-        <hr>
-        <h2>Prediction Result:</h2>
-        <p><strong>Predicted Class:</strong> {{ predicted_class }}</p>
+            {% if predicted_class %}
+                <div class="result-box">
+                    <p><strong>Predicted Class:</strong> {{ predicted_class }}</p>
+                </div>
+                <div class="decision-path">
+                    <h3>Decision Path:</h3>
+                    {{ decision_path }}
+                </div>
+            {% endif %}
+        </div>
 
-        <h3>Decision Path:</h3>
-        <pre>{{ decision_path }}</pre>
-    {% endif %}
+        <!-- Image Section -->
+        <div class="image-section">
+            <h3>This is how the decision is made:</h3>
+            <img src="media/decision_tree.png" alt="Decision Tree Diagram">
+        </div>
+    </div>
 </body>
 </html>
