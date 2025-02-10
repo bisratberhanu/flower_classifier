@@ -3,6 +3,10 @@ import joblib
 import pandas as pd
 from django.shortcuts import render
 from django.conf import settings
+from django.views.decorators.cache import never_cache
+
+from django.shortcuts import redirect
+from django.urls import reverse
 
 # Load the model and metadata once at app startup
 model_path = os.path.join(settings.BASE_DIR, 'classifier', 'decision_tree_model.pkl')
@@ -11,6 +15,9 @@ model = model_data["model"]
 feature_names = model_data["feature_names"]
 target_names = model_data["target_names"]
 
+
+
+@never_cache
 def classify_flower(request):
     predicted_class = None
     decision_path = None
@@ -45,9 +52,22 @@ def classify_flower(request):
                     f"is {threshold_sign} {model.tree_.threshold[node_id]:.2f})\n"
                 )
 
+        # Store results in session or temporary storage (optional)
+        request.session['predicted_class'] = predicted_class
+        request.session['decision_path'] = decision_path
+
+        # Redirect to prevent re-submission
+        return redirect(reverse('classify_flower'))
+
+    elif request.method == "GET":
+        # Reset results on GET request
+        predicted_class = request.session.pop('predicted_class', None)
+        decision_path = request.session.pop('decision_path', None)
+
     # Render the page with results (if any)
     return render(request, 'index.html', {
         'feature_names': feature_names,
         'predicted_class': predicted_class,
         'decision_path': decision_path
     })
+
