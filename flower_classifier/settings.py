@@ -30,6 +30,9 @@ ALLOWED_HOSTS = [
     'flower-classifier-tgog.onrender.com'
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://flower-classifier-tgog.onrender.com',
+]
 
 # Application definition
 
