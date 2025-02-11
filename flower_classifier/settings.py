@@ -25,7 +25,10 @@ SECRET_KEY = 'django-insecure-lr$&5kh0ct9djp0gd71lj6xpb(6%qs=d0%t$loj-ljujn^dsdb
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+
+    'flower-classifier-tgog.onrender.com'
+]
 
 
 # Application definition
